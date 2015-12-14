@@ -39,9 +39,16 @@
       return;
     }
 
-    autoHidingNavbar.element.addClass('navbar-hidden').animate({
+    var style_to_hide = {
       top: -autoHidingNavbar.element.height()
-    }, {
+    };
+    if (autoHidingNavbar.element.hasClass('navbar-fixed-bottom')) {
+      style_to_hide = {
+        bottom: -autoHidingNavbar.element.height()
+      };
+    }
+
+    autoHidingNavbar.element.addClass('navbar-hidden').animate(style_to_hide, {
       queue: false,
       duration: autoHidingNavbar.settings.animationDuration
     });
@@ -56,9 +63,16 @@
       return;
     }
 
-    autoHidingNavbar.element.removeClass('navbar-hidden').animate({
+    var style_to_show = {
       top: 0
-    }, {
+    };
+    if (autoHidingNavbar.element.hasClass('navbar-fixed-bottom')) {
+      style_to_show = {
+        bottom: 0
+      };
+    }
+
+    autoHidingNavbar.element.removeClass('navbar-hidden').animate(style_to_show, {
       queue: false,
       duration: autoHidingNavbar.settings.animationDuration
     });
@@ -143,6 +157,7 @@
       this.setShowOnBottom(this.settings.showOnBottom);
       this.setHideOffset(this.settings.hideOffset);
       this.setAnimationDuration(this.settings.animationDuration);
+      this.setNavbarFixedBottom(this.settings.navbarFixedBottom);
 
       _hideOffset = this.settings.hideOffset === 'auto' ? this.element.height() : this.settings.hideOffset;
       bindEvents(this);
@@ -167,6 +182,10 @@
     },
     setAnimationDuration: function(value) {
       this.settings.animationDuration = value;
+      return this.element;
+    },
+    setNavbarFixedBottom: function(value) {
+      this.settings.navbarFixedBottom = value;
       return this.element;
     },
     show: function() {
